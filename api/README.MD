@@ -1,7 +1,11 @@
-# A gif guessing game!
+# API for giftionary
 
-Can you figure out what the keyword based on these gifs?
+run ```npm start``` to start the server
 
-It's extremely difficult and definitely pointless.
+# Routes
 
-Most people require 9 gifs before they even get close.
+GET /api/gifs
+
+GET /api/gifs/:tag
+
+GET /api/words

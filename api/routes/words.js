@@ -11,6 +11,7 @@ const url = 'http://api.wordnik.com:80/v4/words.json/randomWords';
 /* INDEX */
 
 router.get('/', (req, res) => {
+console.log('GET /api/words')
 
   axios.get(url, {
     params: {

@@ -3,14 +3,14 @@
 const express = require('express');
 const app = express();
 const env = require('dotenv').config();
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const axios = require('axios');
 const PORT = process.env.PORT || 8080;
 
 /* So node won't yell at us */
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.use(express.static(__dirname + '/views'));
 
@@ -18,9 +18,11 @@ app.use(express.static(__dirname + '/views'));
 
 /* API */
 
-const gifsRoutes = require('./routes/gifs');
+const gifsRoutes  = require('./routes/gifs');
+const wordsRoutes = require('./routes/words');
 
 app.use('/api/gifs', gifsRoutes);
+app.use('/api/words', wordsRoutes);
 
 /* Root  */
 

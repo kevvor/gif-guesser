@@ -48,7 +48,7 @@ console.log('GET /api/gifs/' + req.params.tag)
     }
   })
     .then(function(res) {
-      return res.data;
+      return res.data.data;
     })
     .then(function(data) {
       res.json(data);

@@ -1,9 +1,0 @@
-html {
-  background-color: lightblue;
-}
-
-.gifs {
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: column;
-}

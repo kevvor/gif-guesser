@@ -6,7 +6,6 @@ class App extends Component {
     super(props);
     this.state = {
       error: null,
-      isLoaded: false,
       gifs: []
     };
   }
@@ -17,16 +16,16 @@ class App extends Component {
         return res.json();
       })
       .then(data => {
-        console.log(data);
         data.forEach((element) => {
           const gif = {
             id: element.id,
-            url: element.image_url,
-            image_height: element.image_height,
-            image_width: element.image_width
+            url: element.images.original.url,
+            image_height: element.images.original.height,
+            image_width: element.images.original.width
           };
 
           this.setState({
+            isLoaded: true,
             gifs: [...this.state.gifs, gif]
           })
         });
@@ -34,7 +33,7 @@ class App extends Component {
   }
 
   render() {
-    const { error, isLoaded, items } = this.state;
+    const { error, isLoaded, gifs } = this.state;
     if (error) {
       return <div>Error: { error.message }</div>;
     } else if (!isLoaded) {
@@ -42,13 +41,9 @@ class App extends Component {
     } else {
       return (
         <div className="App">
-          <ul>
-            {items.map(item => (
-              <li key={item.name}>
-                {item.name} {item.price}
-              </li>
-            ))}
-          </ul>
+          {gifs.map(gif => (
+            <div key={gif.id} style={{backgroundImage: `url(${gif.url})`, height: `${gif.image_height}px`, width: `${gif.image_width}px`}}></div>
+          ))}
         </div>
       );
     }

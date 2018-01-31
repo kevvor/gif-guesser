@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Gif from './Gif';
 import '../stylesheets/App.css';
 
 class App extends Component {
@@ -13,12 +14,15 @@ class App extends Component {
   }
 
   getSearchTerm(wordsArray) {
-    console.log(wordsArray)
+    for (let word of wordsArray) {
+      console.log(word.word)
+    }
     for (let word of wordsArray) {
       if (word.answer === true) {
         return word.word;
       }
     }
+    this.setState({ error: {message: 'Error getting search term'} });
   }
 
   componentDidMount() {
@@ -27,8 +31,8 @@ class App extends Component {
       .then(words => {
         words.forEach(element => {
           const { id, word, answer = false } = element;
-          this.setState({ words: [...this.state.words, {word, id, answer}] })
-        })
+          this.setState({ words: [...this.state.words, {word, id, answer}] });
+        });
         return words;
       })
     .then(words => {
@@ -55,13 +59,15 @@ class App extends Component {
     if (error) {
       return <div>Error: { error.message }</div>;
     } else if (!isLoaded) {
-      return <div>Loading...</div>
+      return <div className='loading-msg'>Loading...</div>
     } else {
       return (
         <div className="App">
-          {gifs.map(gif => (
-            <div key={gif.id} style={{backgroundImage: `url(${gif.url})`, height: `${gif.height}px`, width: `${gif.width}px`}}></div>
-          ))}
+          {gifs.map((gif) =>
+            <Gif key={gif.id}
+                 gif={gif}
+            />
+          )}
         </div>
       );
     }

@@ -6,29 +6,47 @@ class App extends Component {
     super(props);
     this.state = {
       error: null,
-      gifs: []
+      isLoaded: false,
+      gifs: [],
+      words: []
     };
   }
 
-  componentDidMount() {
-    fetch('api/gifs/pickle')
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        data.forEach((element) => {
-          const gif = {
-            id: element.id,
-            url: element.images.original.url,
-            image_height: element.images.original.height,
-            image_width: element.images.original.width
-          };
+  getSearchTerm(wordsArray) {
+    console.log(wordsArray)
+    for (let word of wordsArray) {
+      if (word.answer === true) {
+        return word.word;
+      }
+    }
+  }
 
-          this.setState({
-            isLoaded: true,
-            gifs: [...this.state.gifs, gif]
-          })
-        });
+  componentDidMount() {
+    fetch('api/words')
+      .then(res => res.json())
+      .then(words => {
+        words.forEach(element => {
+          const { id, word, answer = false } = element;
+          this.setState({ words: [...this.state.words, {word, id, answer}] })
+        })
+        return words;
+      })
+    .then(words => {
+      fetch(`api/gifs/${ this.getSearchTerm(words) }`)
+        .then(res => res.json())
+        .then(gifs => {
+          // console.log(data)
+          gifs.forEach((element) => {
+            const { url, height, width, id } = element;
+            this.setState({
+              isLoaded: true,
+              gifs: [...this.state.gifs, { url, height, width, id }]
+            })
+          });
+          // console.log('gifs', gifs)
+          return gifs;
+        })//.then(data => console.log('data', data))
+        // return words;
       })
   }
 
@@ -42,7 +60,7 @@ class App extends Component {
       return (
         <div className="App">
           {gifs.map(gif => (
-            <div key={gif.id} style={{backgroundImage: `url(${gif.url})`, height: `${gif.image_height}px`, width: `${gif.image_width}px`}}></div>
+            <div key={gif.id} style={{backgroundImage: `url(${gif.url})`, height: `${gif.height}px`, width: `${gif.width}px`}}></div>
           ))}
         </div>
       );

@@ -4,9 +4,14 @@ const express       = require('express');
 const router        = express.Router();
 const axios         = require('axios');
 
-// API info
+/* API info */
+
 const WORDNIK_API_KEY = process.env.WORDNIK_API_KEY;
 const url = 'http://api.wordnik.com:80/v4/words.json/randomWords';
+
+/* Helper */
+
+const helper = require('../helpers/words');
 
 /* INDEX */
 
@@ -25,6 +30,7 @@ console.log('GET /api/words')
       return res.data;
     })
     .then(function(data) {
+      helper.selectRandom(data);
       res.json(data);
     })
     .catch(function(err) {

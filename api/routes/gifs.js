@@ -21,8 +21,8 @@ console.log('GET /api/gifs')
       tag: 'pickle'
     }
   })
-    .then(function(response) {
-      return response.data;
+    .then(function(res) {
+      return res.data;
     })
     .then(function(data) {
       res.json(data);
@@ -48,7 +48,14 @@ console.log('GET /api/gifs/' + req.params.tag)
     }
   })
     .then(function(res) {
-      return res.data.data;
+      const result = [];
+
+      res.data.data.forEach(element => {
+        const { id, images: { original: { url, width, height } } } = element
+        result.push({ id, url, width, height} )
+      })
+
+      return result;
     })
     .then(function(data) {
       res.json(data);

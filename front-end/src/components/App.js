@@ -17,8 +17,17 @@ class App extends Component {
       words: [],
       answer: null,
       selectedOption: null,
-      userAnswered: null
+      userAnswered: null,
+      isModalOpen: false
     };
+  }
+
+  modalOpen() {
+    this.setState({ isModalOpen: true })
+  }
+
+  modalClose() {
+    this.setState({ isModalOpen: false })
   }
 
   handleFormSubmit(e) {
@@ -105,7 +114,15 @@ class App extends Component {
   }
 
   render() {
-    const { error, isLoaded, gifs, words, userAnswered } = this.state;
+    const { error, isLoaded, words, userAnswered } = this.state;
+
+    const gifs = this.state.gifs.map((gif) => {
+      return (
+        <Gif key={gif.id}
+             gif={gif}
+        />
+      )
+    })
 
     if (error) {
       return <div>Error: { error.message }</div>;
@@ -127,11 +144,7 @@ class App extends Component {
                 handleOptionChange={this.handleOptionChange.bind(this)}
                 selectedOption={this.state.selectedOption}
           />
-          {gifs.map((gif) =>
-            <Gif key={gif.id}
-                 gif={gif}
-            />
-          )}
+          { gifs }
         </div>
       );
     }

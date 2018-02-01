@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import '../stylesheets/Form.css'
 
 class Form extends Component {
   render() {
     const { handleFormSubmit, handleOptionChange, selectedOption, words } = this.props;
     return (
-      <form onSubmit={handleFormSubmit}>
+      <form id="game-form" onSubmit={handleFormSubmit}>
         {words.map((word) =>
             <label key={word.id}>
               <input type="radio" value={word.word}

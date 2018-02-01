@@ -1,0 +1,9 @@
+#game-form {
+  position: fixed;
+  font-size: 3em;
+  top: 0;
+  right: 0;
+  background-color: pink;
+  display: flex;
+  flex-direction: column;
+}

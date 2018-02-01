@@ -34,7 +34,7 @@ class App extends Component {
         return word.word;
       }
     }
-    this.setState({ error: {message: 'Error getting search term'} });
+    this.setState({ error: {message: 'Error getting answer'} });
   }
 
   componentDidMount() {

@@ -1,22 +1,34 @@
 import React, { Component } from 'react';
+
+/* Components */
 import Gif from './Gif';
+import Form from './Form';
+
 import '../stylesheets/App.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       error: null,
       isLoaded: false,
       gifs: [],
-      words: []
+      words: [],
+      answer: ''
     };
   }
 
-  getSearchTerm(wordsArray) {
-    for (let word of wordsArray) {
-      console.log(word.word)
-    }
+  handleFormSubmit(e) {
+    e.preventDefault();
+    console.log(this.state.selectedOption === this.state.answer)
+  }
+
+  handleOptionChange(e) {
+    this.setState({ selectedOption: e.target.value })
+  }
+
+  getAnswer(wordsArray) {
     for (let word of wordsArray) {
       if (word.answer === true) {
         return word.word;
@@ -29,33 +41,32 @@ class App extends Component {
     fetch('api/words')
       .then(res => res.json())
       .then(words => {
+        const arr = [];
         words.forEach(element => {
           const { id, word, answer = false } = element;
-          this.setState({ words: [...this.state.words, {word, id, answer}] });
+          arr.push({ id, word, answer });
         });
+        this.setState({ words: arr, answer: this.getAnswer(words) });
         return words;
       })
     .then(words => {
-      fetch(`api/gifs/${ this.getSearchTerm(words) }`)
+      fetch(`api/gifs/${ this.getAnswer(words) }`)
         .then(res => res.json())
         .then(gifs => {
-          // console.log(data)
+          const arr = [];
           gifs.forEach((element) => {
             const { url, height, width, id } = element;
-            this.setState({
-              isLoaded: true,
-              gifs: [...this.state.gifs, { url, height, width, id }]
-            })
+            arr.push({ url, height, width, id });
           });
-          // console.log('gifs', gifs)
+          this.setState({ gifs: arr, isLoaded: true });
           return gifs;
-        })//.then(data => console.log('data', data))
-        // return words;
+        })
       })
   }
 
   render() {
-    const { error, isLoaded, gifs } = this.state;
+    const { error, isLoaded, gifs, words } = this.state;
+
     if (error) {
       return <div>Error: { error.message }</div>;
     } else if (!isLoaded) {
@@ -63,6 +74,11 @@ class App extends Component {
     } else {
       return (
         <div className="App">
+          <Form words={words}
+                handleFormSubmit={this.handleFormSubmit.bind(this)}
+                handleOptionChange={this.handleOptionChange.bind(this)}
+                selectedOption={this.state.selectedOption}
+          />
           {gifs.map((gif) =>
             <Gif key={gif.id}
                  gif={gif}

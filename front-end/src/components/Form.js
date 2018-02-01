@@ -15,7 +15,7 @@ class Form extends Component {
               {word.word}
             </label>
         )}
-        <button className="btn">submit</button>
+        <button className="btn submit">submit</button>
       </form>
     )
   }

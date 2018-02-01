@@ -15,17 +15,38 @@ class App extends Component {
       isLoaded: false,
       gifs: [],
       words: [],
-      answer: ''
+      answer: null,
+      selectedOption: null,
+      userAnswered: null
     };
   }
 
   handleFormSubmit(e) {
+    const { selectedOption, answer } = this.state;
     e.preventDefault();
-    console.log(this.state.selectedOption === this.state.answer)
+    if (selectedOption === answer) {
+      this.setState({ userAnswered: { message: "Correct!"} })
+    } else {
+      this.setState({ userAnswered: { message: `Sorry! The answer was ${answer}`} })
+    }
   }
 
   handleOptionChange(e) {
     this.setState({ selectedOption: e.target.value })
+  }
+
+  resetGame(e) {
+    e.preventDefault();
+    this.setState({
+      error: null,
+      isLoaded: false,
+      gifs: [],
+      words: [],
+      answer: null,
+      selectedOption: null,
+      userAnswered: null
+    });
+    this.loadPage();
   }
 
   getAnswer(wordsArray) {
@@ -38,18 +59,28 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('api/words')
-      .then(res => res.json())
-      .then(words => {
-        const arr = [];
-        words.forEach(element => {
-          const { id, word, answer = false } = element;
-          arr.push({ id, word, answer });
-        });
-        this.setState({ words: arr, answer: this.getAnswer(words) });
-        return words;
-      })
-    .then(words => {
+    this.loadPage();
+  }
+
+  getWords() {
+    return (
+      fetch('api/words')
+        .then(res => res.json())
+        .then(words => {
+          const arr = [];
+          words.forEach(element => {
+            const { id, word, answer = false } = element;
+            arr.push({ id, word, answer });
+          });
+          this.setState({ words: arr, answer: this.getAnswer(words) });
+          return words;
+        })
+        .catch(error => this.setState({ error }))
+    )
+  }
+
+  getGifs(words) {
+    return (
       fetch(`api/gifs/${ this.getAnswer(words) }`)
         .then(res => res.json())
         .then(gifs => {
@@ -61,16 +92,33 @@ class App extends Component {
           this.setState({ gifs: arr, isLoaded: true });
           return gifs;
         })
+        .catch(error => this.setState({ error }))
+      )
+  }
+
+  loadPage() {
+    this.getWords()
+      .then(words => {
+        this.getGifs(words)
       })
+      .catch(error => this.setState({ error }))
   }
 
   render() {
-    const { error, isLoaded, gifs, words } = this.state;
+    const { error, isLoaded, gifs, words, userAnswered } = this.state;
 
     if (error) {
       return <div>Error: { error.message }</div>;
     } else if (!isLoaded) {
-      return <div className='loading-msg'>Loading...</div>
+      return <div className='answered user-msg'>Loading...</div>
+    } else if(userAnswered) {
+      return (
+        <div className='loading user-msg'>
+          { userAnswered.message }
+          <br/>
+          <button className="btn play-again" onClick={this.resetGame.bind(this)}>Play again?</button>
+        </div>
+      )
     } else {
       return (
         <div className="App">

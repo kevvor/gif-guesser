@@ -2,6 +2,16 @@ body {
   background-color: lightblue;
 }
 
-.loading-msg {
-  margin: 0 auto;
+.user-msg {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2em;
+  margin: 10px 0;
+}
+
+button.btn.play-again {
+  margin: 10px 0;
+  font-size: 1em;
 }

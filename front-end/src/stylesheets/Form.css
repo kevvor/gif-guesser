@@ -1,9 +1,14 @@
 #game-form {
   position: fixed;
   font-size: 3em;
-  top: 0;
-  right: 0;
+  top: 3px;
+  right: 3px;
+  border-radius: 2.5px;
   background-color: pink;
   display: flex;
   flex-direction: column;
+}
+
+button.btn.submit {
+  font-size: .75em;
 }

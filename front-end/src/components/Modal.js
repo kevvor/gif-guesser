@@ -4,9 +4,6 @@ import Gif from './Gif';
 import '../stylesheets/Modal.css'
 
 class Modal extends Component {
-  // componentDidMount() {
-  //   console.log(this.props.winningGif())
-  // }
   render() {
     const { message, isCorrect, winningGif, resetGame } = this.props;
 

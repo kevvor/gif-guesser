@@ -134,7 +134,7 @@ class App extends Component {
 
   getWords() {
     return (
-      fetch('api/words')
+      fetch('https://giftionary-api.herokuapp.com/api/words')
         .then(res => res.json())
         .then(words => {
           const arr = [];
@@ -151,7 +151,7 @@ class App extends Component {
 
   getGifs(words) {
     return (
-      fetch(`api/gifs/${ this.getAnswer(words) }`)
+      fetch(`https://giftionary-api.herokuapp.com/api/gifs/${ this.getAnswer(words) }`)
         .then(res => res.json())
         .then(gifs => {
           const arr = [];

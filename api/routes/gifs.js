@@ -12,7 +12,6 @@ const url = 'https://api.giphy.com/v1/gifs';
 /* INDEX */
 
 router.get('/', (req, res) => {
-console.log('GET /api/gifs')
 // Get a random gif
 
   axios.get(`${url}/random`, {
@@ -36,7 +35,6 @@ console.log('GET /api/gifs')
 /* SHOW */
 
 router.get('/:tag', (req, res) => {
-console.log('GET /api/gifs/' + req.params.tag)
 // Get gifs based on tag
 
   axios.get(`${url}/search`, {

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Giftionary API</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-10">
+    <h3>Giftionary API Reference</h3>
+    <p>All requests require a key param, eg `giftionary.herokuapp.com/api/gifs?key=123`</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Endpoint</th>
+          <th>Method</th>
+          <th>Example</th>
+          <th>Sample Response</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <i>/api/gifs/:tag</i>
+          </td>
+          <td>GET</td>
+          <td>http://giftionary.herokuapp.com/api/gifs/pickle</td>
+          <td>
+            <pre>
+[
+  {
+    "id": "gXFpraXeKyHDi",
+    "url": "https://media0.giphy.com/media/gXFpraXeKyHDi/giphy.gif",
+    "width": "500",
+    "height": "282"
+  },
+  {
+    "id": "r6T74LkYSSmoE",
+    "url": "https://media2.giphy.com/media/r6T74LkYSSmoE/giphy.gif",
+    "width": "400",
+    "height": "227"
+  }, ...
+]            </pre>
+          </td>
+          <td>Fetches 10 random GIFs based on <code>:tag</code></td>
+        </tr>
+        <tr>
+          <td>
+            <i>/api/words</i>
+          </td>
+          <td>GET</td>
+          <td>http://giftionary.herokuapp.com/api/words</td>
+          <td>
+            <pre>
+[
+  {
+    "id": 238366,
+    "word": "accused"
+  },
+  {
+    "id": 70839,
+    "word": "high"
+  },
+  {
+    "id": 91524,
+    "word": "largely",
+    "answer": true
+  },
+  {
+    "id": 78147,
+    "word": "making"
+  }
+]          </pre>
+          </td>
+          <td>Fetches 4 random words. 1 will be the "answer."</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="col-1"></div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

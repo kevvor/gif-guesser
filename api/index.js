@@ -20,6 +20,10 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+/* Views */
+app.use(express.static('public'));
+app.use(express.static(__dirname + '/views'));
+
 /* Router */
 
 app.use('/api/gifs', gifs);
@@ -28,7 +32,8 @@ app.use('/api/words', words);
 /* Root */
 
 app.get('/', (req, res) => {
-  res.json({msg: 'Welcome to the giftionary api'});
+  // res.json({msg: 'Welcome to the giftionary api'});
+  res.send('index.html');
 });
 
 app.get('/happy', (req, res) => {

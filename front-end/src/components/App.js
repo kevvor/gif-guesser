@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 /* Components */
 import Gif from './Gif';
 import Form from './Form';
+import Modal from './Modal';
 
 import '../stylesheets/App.css';
 
@@ -18,25 +19,81 @@ class App extends Component {
       answer: null,
       selectedOption: null,
       userAnswered: null,
-      isModalOpen: false
+      modal: {
+        isOpen: false,
+        message: ''
+      }
     };
   }
 
-  modalOpen() {
-    this.setState({ isModalOpen: true })
+  componentDidMount() {
+    this.loadPage();
+  }
+
+  render() {
+    const { error, isLoaded, words, modal } = this.state;
+
+    const gifs = this.state.gifs.map((gif) => {
+      return (
+        <Gif key={gif.id}
+             gif={gif}
+        />
+      )
+    })
+
+    if (error) {
+      return <div>Error: { error.message }</div>;
+    } else if (!isLoaded) {
+      return <div className='answered user-msg'>Loading...</div>
+    } else {
+      return (
+        <div className="App">
+          {modal.isOpen &&
+            <Modal modalClose={this.modalClose.bind(this)}
+                   message={modal.message}
+            />
+          }
+          <Form words={words}
+                handleFormSubmit={this.handleFormSubmit.bind(this)}
+                handleOptionChange={this.handleOptionChange.bind(this)}
+                selectedOption={this.state.selectedOption}
+          />
+          { gifs }
+        </div>
+      );
+    }
+  }
+
+  handlePromiseError(error) {
+    this.setState({ error })
+  }
+
+  modalOpen(message) {
+    this.setState({
+      modal: {
+        isOpen: true,
+        message
+      }
+    })
   }
 
   modalClose() {
-    this.setState({ isModalOpen: false })
+    this.setState({
+      modal: { isOpen: false }
+    })
   }
 
   handleFormSubmit(e) {
-    const { selectedOption, answer } = this.state;
     e.preventDefault();
+
+    const { selectedOption, answer } = this.state;
+
     if (selectedOption === answer) {
-      this.setState({ userAnswered: { message: "Correct!"} })
-    } else {
-      this.setState({ userAnswered: { message: `Sorry! The answer was ${answer}`} })
+      this.modalOpen('You got it!');
+    } else if (selectedOption === null) {
+      console.log('null')
+    } else if (selectedOption !== answer) {
+      this.modalOpen('Sorry! The answer was ' + answer + '.')
     }
   }
 
@@ -67,8 +124,12 @@ class App extends Component {
     this.setState({ error: {message: 'Error getting answer'} });
   }
 
-  componentDidMount() {
-    this.loadPage();
+  loadPage() {
+    this.getWords()
+      .then(words => {
+        this.getGifs(words)
+      })
+      .catch(this.handlePromiseError)
   }
 
   getWords() {
@@ -84,7 +145,7 @@ class App extends Component {
           this.setState({ words: arr, answer: this.getAnswer(words) });
           return words;
         })
-        .catch(error => this.setState({ error }))
+        .catch(this.handlePromiseError)
     )
   }
 
@@ -101,53 +162,8 @@ class App extends Component {
           this.setState({ gifs: arr, isLoaded: true });
           return gifs;
         })
-        .catch(error => this.setState({ error }))
+        .catch(this.handlePromiseError)
       )
-  }
-
-  loadPage() {
-    this.getWords()
-      .then(words => {
-        this.getGifs(words)
-      })
-      .catch(error => this.setState({ error }))
-  }
-
-  render() {
-    const { error, isLoaded, words, userAnswered } = this.state;
-
-    const gifs = this.state.gifs.map((gif) => {
-      return (
-        <Gif key={gif.id}
-             gif={gif}
-        />
-      )
-    })
-
-    if (error) {
-      return <div>Error: { error.message }</div>;
-    } else if (!isLoaded) {
-      return <div className='answered user-msg'>Loading...</div>
-    } else if(userAnswered) {
-      return (
-        <div className='loading user-msg'>
-          { userAnswered.message }
-          <br/>
-          <button className="btn play-again" onClick={this.resetGame.bind(this)}>Play again?</button>
-        </div>
-      )
-    } else {
-      return (
-        <div className="App">
-          <Form words={words}
-                handleFormSubmit={this.handleFormSubmit.bind(this)}
-                handleOptionChange={this.handleOptionChange.bind(this)}
-                selectedOption={this.state.selectedOption}
-          />
-          { gifs }
-        </div>
-      );
-    }
   }
 }
 

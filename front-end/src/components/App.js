@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 
 /* Components */
+
 import Gif from './Gif';
 import Form from './Form';
 import Modal from './Modal';
+
+/* Utils */
+
+import { winningGif } from '../utils/modal';
+
+/* Stylesheets */
 
 import '../stylesheets/App.css';
 
@@ -19,6 +26,7 @@ class App extends Component {
       answer: null,
       selectedOption: null,
       userAnswered: null,
+      isCorrect: null,
       modal: {
         isOpen: false,
         message: ''
@@ -31,7 +39,7 @@ class App extends Component {
   }
 
   render() {
-    const { error, isLoaded, words, modal } = this.state;
+    const { error, isLoaded, words, modal, isCorrect } = this.state;
 
     const gifs = this.state.gifs.map((gif) => {
       return (
@@ -51,6 +59,9 @@ class App extends Component {
           {modal.isOpen &&
             <Modal modalClose={this.modalClose.bind(this)}
                    message={modal.message}
+                   winningGif={winningGif}
+                   isCorrect={isCorrect}
+                   resetGame={this.resetGame.bind(this)}
             />
           }
           <Form words={words}
@@ -64,35 +75,55 @@ class App extends Component {
     }
   }
 
-  handlePromiseError(error) {
-    this.setState({ error })
-  }
-
   modalOpen(message) {
     this.setState({
       modal: {
         isOpen: true,
         message
       }
-    })
-  }
+    });
+  };
 
   modalClose() {
     this.setState({
       modal: { isOpen: false }
-    })
+    });
+  };
+
+  resetGame() {
+    this.setState({
+      error: null,
+      isLoaded: false,
+      gifs: [],
+      words: [],
+      answer: null,
+      selectedOption: null,
+      userAnswered: null,
+      isCorrect: null,
+      modal: {
+        isOpen: false,
+        message: ''
+      }
+    });
+    this.loadPage();
+  }
+
+  handlePromiseError(error) {
+    this.setState({ error })
   }
 
   handleFormSubmit(e) {
     e.preventDefault();
 
-    const { selectedOption, answer } = this.state;
+    const { selectedOption, answer, isCorrect } = this.state;
 
     if (selectedOption === answer) {
+      this.setState({ isCorrect: true })
       this.modalOpen('You got it!');
     } else if (selectedOption === null) {
-      console.log('null')
+      this.modalOpen('Pick something!');
     } else if (selectedOption !== answer) {
+      this.setState( isCorrect: false )
       this.modalOpen('Sorry! The answer was ' + answer + '.')
     }
   }
@@ -101,23 +132,10 @@ class App extends Component {
     this.setState({ selectedOption: e.target.value })
   }
 
-  resetGame(e) {
-    e.preventDefault();
-    this.setState({
-      error: null,
-      isLoaded: false,
-      gifs: [],
-      words: [],
-      answer: null,
-      selectedOption: null,
-      userAnswered: null
-    });
-    this.loadPage();
-  }
-
   getAnswer(wordsArray) {
     for (let word of wordsArray) {
       if (word.answer === true) {
+        console.log(word.word)
         return word.word;
       }
     }
@@ -151,7 +169,7 @@ class App extends Component {
 
   getGifs(words) {
     return (
-      fetch(`https://giftionary-api.herokuapp.com/api/gifs/${ this.getAnswer(words) }`)
+      fetch(`https://giftionary-api.herokuapp.com/api/gifs/${ this.state.answer }`)
         .then(res => res.json())
         .then(gifs => {
           const arr = [];

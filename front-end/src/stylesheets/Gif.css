@@ -1,3 +1,28 @@
-div.gif {
-  max-width: 100vw;
+div.masonry {
+  column-count: 3;
+  column-gap: 1em;
+  padding: 1em;
+}
+
+@media (max-width: 1000px) {
+  div.masonry {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 600px) {
+  div.masonry {
+    column-count: 1;
+  }
+}
+
+figure {
+  margin: 0;
+}
+
+figure img.gif {
+  margin: 0 0 1em;
+  max-width: 100%;
+  border-radius: 2px;
+  background-color: #3f3f3f;
 }

@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 
 /* Components */
-
 import Gif from './Gif';
 import Form from './Form';
 import Modal from './Modal';
 
 /* Utils */
-
 import { winningGif } from '../utils/modal';
+import { handlePromiseError } from '../utils/handlePromiseError';
+import { getAnswer} from '../utils/words';
+
+/* API stuff */
+import { getWords, getGifs } from '../api';
 
 /* Stylesheets */
-
 import '../stylesheets/App.css';
 
 class App extends Component {
@@ -36,6 +38,20 @@ class App extends Component {
 
   componentDidMount() {
     this.loadPage();
+  }
+
+  loadPage() {
+    getWords()
+    .then(words => {
+      const answer = getAnswer(words);
+      this.setState({ words, answer });
+
+      getGifs(answer) // getGifs takes one arg, a search term to fetch gifs
+      .then(gifs => {
+        this.setState({ gifs: gifs, isLoaded: true });
+      })
+    })
+    .catch(handlePromiseError)
   }
 
   render() {
@@ -69,7 +85,9 @@ class App extends Component {
                 handleOptionChange={this.handleOptionChange.bind(this)}
                 selectedOption={this.state.selectedOption}
           />
-          { gifs }
+          <div className="masonry">
+            { gifs }
+          </div>
         </div>
       );
     }
@@ -108,10 +126,6 @@ class App extends Component {
     this.loadPage();
   }
 
-  handlePromiseError(error) {
-    this.setState({ error })
-  }
-
   handleFormSubmit(e) {
     e.preventDefault();
 
@@ -130,58 +144,6 @@ class App extends Component {
 
   handleOptionChange(e) {
     this.setState({ selectedOption: e.target.value })
-  }
-
-  getAnswer(wordsArray) {
-    for (let word of wordsArray) {
-      if (word.answer === true) {
-        console.log(word.word)
-        return word.word;
-      }
-    }
-    this.setState({ error: {message: 'Error getting answer'} });
-  }
-
-  loadPage() {
-    this.getWords()
-      .then(words => {
-        this.getGifs(words)
-      })
-      .catch(this.handlePromiseError)
-  }
-
-  getWords() {
-    return (
-      fetch('https://giftionary-api.herokuapp.com/api/words')
-        .then(res => res.json())
-        .then(words => {
-          const arr = [];
-          words.forEach(element => {
-            const { id, word, answer = false } = element;
-            arr.push({ id, word, answer });
-          });
-          this.setState({ words: arr, answer: this.getAnswer(words) });
-          return words;
-        })
-        .catch(this.handlePromiseError)
-    )
-  }
-
-  getGifs(words) {
-    return (
-      fetch(`https://giftionary-api.herokuapp.com/api/gifs/${ this.state.answer }`)
-        .then(res => res.json())
-        .then(gifs => {
-          const arr = [];
-          gifs.forEach((element) => {
-            const { url, height, width, id } = element;
-            arr.push({ url, height, width, id });
-          });
-          this.setState({ gifs: arr, isLoaded: true });
-          return gifs;
-        })
-        .catch(this.handlePromiseError)
-      )
   }
 }
 

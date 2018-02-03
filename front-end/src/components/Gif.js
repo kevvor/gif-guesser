@@ -1,13 +1,17 @@
 import React from 'react';
 
+import '../stylesheets/Gif.css';
+
 const Gif = (props) => {
   const { gif } = props;
   return (
-    <div className="gif"
-         style={{ backgroundImage: `url(${gif.url})`,
-                  height: `${gif.height}px`,
-                  width: `${gif.width}px` }}>
-    </div>
+    <figure>
+      <img
+        className="gif item"
+        src={gif.url}
+        alt={gif.id}
+      />
+    </figure>
   )
 }
 

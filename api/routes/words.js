@@ -11,7 +11,7 @@ const url = 'http://api.wordnik.com:80/v4/words.json/randomWords';
 
 /* Request params */
 const minCorpus = 400000; // How frequently a word must appear in a sample text of billions of words
-const maxCorpus = -1;     // Note, I'm not sure how large the API's sample is, this was through trial and error
+const maxCorpus = -1;     // Note: I'm not sure how large the API's sample is, this number was determined through trial and error
 
 /* Helper */
 

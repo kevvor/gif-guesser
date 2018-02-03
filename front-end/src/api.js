@@ -1,7 +1,7 @@
 /* API calls */
 
 import { handlePromiseError } from './utils/handlePromiseError';
-import { BASE_URL } from './giftionaryConstants';
+import { BASE_URL } from './giftionaryConstants'
 
 export function getWords() {
     return (

@@ -21,7 +21,7 @@ export function getWords() {
 
 export function getGifs(searchTerm) {
     return (
-      fetch(`https://giftionary-api.herokuapp.com/api/gifs/${searchTerm}`)
+      fetch(`${BASE_URL}/api/gifs/${searchTerm}/20`)
         .then(res => res.json())
         .then(gifs => {
           const gifsArray = [];

@@ -34,14 +34,14 @@ router.get('/', (req, res) => {
 
 /* SHOW */
 
-router.get('/:tag', (req, res) => {
+router.get('/:tag/:limit', (req, res) => {
 // Get gifs based on tag
 
   axios.get(`${url}/search`, {
     params: {
       api_key: GIPHY_API_KEY,
       q: req.params.tag,
-      limit: 10,
+      limit: req.params.limit,
       lang: 'en'
     }
   })

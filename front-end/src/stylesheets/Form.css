@@ -1,14 +1,21 @@
 #game-form {
   position: fixed;
-  font-size: 2em;
-  top: 3px;
-  right: 3px;
+  font-size: 1.2em;
+  bottom: 3px;
   border-radius: 2.5px;
   background-color: pink;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.form-radio {
+  text-decoration: none;
 }
 
 button.btn.submit {
-  font-size: .75em;
+  font-size: 1em;
+  background-color: #fff;
+  margin: 2px;
+  width: 100%;
 }

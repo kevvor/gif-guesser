@@ -1,7 +1,7 @@
 /* API calls */
 
 import { handlePromiseError } from './utils/handlePromiseError';
-import { BASE_URL } from './giftionaryConstants'
+import { BASE_URL, GIF_LIMIT } from './giftionaryConstants'
 
 export function getWords() {
     return (
@@ -21,7 +21,7 @@ export function getWords() {
 
 export function getGifs(searchTerm) {
     return (
-      fetch(`${BASE_URL}/api/gifs/${searchTerm}/20`)
+      fetch(`${BASE_URL}/api/gifs/${searchTerm}/${GIF_LIMIT}`)
         .then(res => res.json())
         .then(gifs => {
           const gifsArray = [];

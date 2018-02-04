@@ -9,9 +9,12 @@ class Form extends Component {
       <form id="game-form" onSubmit={handleFormSubmit}>
         {words.map((word) =>
             <label key={word.id}>
-              <input type="radio" value={word.word}
-                     checked={selectedOption === word.word}
-                     onChange={handleOptionChange}
+              <input
+                className="form-radio"
+                type="radio"
+                value={word.word}
+                checked={selectedOption === word.word}
+                onChange={handleOptionChange}
               />
               {word.word}
             </label>

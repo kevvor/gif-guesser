@@ -60,7 +60,8 @@ class App extends Component {
     const gifs = this.state.gifs.map((gif) => {
       return (
         <Gif key={gif.id}
-             gif={gif}
+             gif={gif.gif}
+             still={gif.still}
         />
       )
     })

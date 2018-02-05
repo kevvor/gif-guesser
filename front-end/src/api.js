@@ -1,7 +1,7 @@
 /* API calls */
 
 import { handlePromiseError } from './utils/handlePromiseError';
-import { BASE_URL, GIF_LIMIT } from './giftionaryConstants'
+import { BASE_URL, GIF_LIMIT } from './giftionaryConstants';
 
 export function getWords() {
     return (
@@ -26,11 +26,12 @@ export function getGifs(searchTerm) {
         .then(gifs => {
           const gifsArray = [];
           gifs.forEach((element) => {
-            const { url, height, width, id } = element;
-            gifsArray.push({ url, height, width, id });
+            const { id, gif, still } = element;
+            gifsArray.push({ id, gif, still });
           });
+
           return gifsArray;
         })
         .catch(handlePromiseError)
-      )
+    )
   }

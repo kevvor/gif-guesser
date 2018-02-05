@@ -49,8 +49,22 @@ router.get('/:tag/:limit', (req, res) => {
       const result = [];
 
       res.data.data.forEach(element => {
-        const { id, images: { original: { url, width, height } } } = element
-        result.push({ id, url, width, height} )
+
+        const gifData = {
+          id: element.id,
+          gif: {
+            url: element.images.downsized.url,
+            width: element.images.downsized.width,
+            height: element.images.downsized.height
+          },
+          still: {
+            url: element.images.downsized_still.url,
+            width: element.images.downsized_still.width,
+            height: element.images.downsized_still.height
+          }
+        }
+
+        result.push(gifData)
       })
 
       return result;

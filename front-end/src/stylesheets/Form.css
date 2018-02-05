@@ -1,12 +1,12 @@
 #game-form {
   font-size: 1.4em;
-  border-radius: 2.5px;
-  background-color: pink;
+  background-color: tomato;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
   position: fixed;
-  bottom: 3px;
+  bottom: 0;
+  right: 0;
   text-transform: uppercase;
   width: 100%;
 }

@@ -7,8 +7,8 @@ import Modal from './Modal';
 
 /* Utils */
 import { winningGif } from '../utils/modal';
-import { handlePromiseError } from '../utils/handlePromiseError';
 import { getAnswer} from '../utils/words';
+import { handlePromiseError } from '../utils/handlePromiseError';
 
 /* API stuff */
 import { getWords, getGifs } from '../api';

@@ -8,7 +8,7 @@ class Form extends Component {
     return (
       <form id="game-form" onSubmit={handleFormSubmit}>
         {words.map((word) =>
-            <label key={word.id}>
+            <label key={word.id} className="radio-label">
               <input
                 className="form-radio"
                 type="radio"

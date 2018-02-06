@@ -1,23 +1,33 @@
 #game-form {
-  font-size: 1.4em;
-  background-color: tomato;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  text-transform: uppercase;
   width: 100%;
+  bottom: 0;
+  position: fixed;
+  display: grid;
+  grid-gap: 3px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  background-color: #ecf0f1;
 }
 
 .form-radio {
-  text-decoration: none;
+  display: none;
+}
+
+label.radio-label {
+  background-color: #3498db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  font-size: .9em;
+  border-radius: 0 0 5px 5px;
 }
 
 button.btn.submit {
+  grid-column: 2 / 4;
+  grid-row: 2;
   font-size: 1em;
-  background-color: #fff;
-  margin: 2px;
-  width: 100%;
+  font-size: 1.2em;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

@@ -1,20 +1,13 @@
 /* API calls */
 
 import { handlePromiseError } from './utils/handlePromiseError';
-import { BASE_URL, GIF_LIMIT } from './giftionaryConstants'
+import { BASE_URL, GIF_LIMIT } from './giftionaryConstants';
 
 export function getWords() {
     return (
       fetch(`${BASE_URL}/api/words`)
         .then(res => res.json())
-        .then(words => {
-          const arr = [];
-          words.forEach(element => {
-            const { id, word, answer = false } = element;
-            arr.push({ id, word, answer });
-          });
-          return words;
-        })
+        .then(words => words)
         .catch(handlePromiseError)
     )
   }
@@ -25,12 +18,14 @@ export function getGifs(searchTerm) {
         .then(res => res.json())
         .then(gifs => {
           const gifsArray = [];
+
           gifs.forEach((element) => {
-            const { url, height, width, id } = element;
-            gifsArray.push({ url, height, width, id });
+            const { id, gif, still } = element;
+            gifsArray.push({ id, gif, still });
           });
+
           return gifsArray;
         })
         .catch(handlePromiseError)
-      )
+    )
   }

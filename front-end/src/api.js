@@ -7,14 +7,7 @@ export function getWords() {
     return (
       fetch(`${BASE_URL}/api/words`)
         .then(res => res.json())
-        .then(words => {
-          const arr = [];
-          words.forEach(element => {
-            const { id, word, answer = false } = element;
-            arr.push({ id, word, answer });
-          });
-          return words;
-        })
+        .then(words => words)
         .catch(handlePromiseError)
     )
   }
@@ -25,6 +18,7 @@ export function getGifs(searchTerm) {
         .then(res => res.json())
         .then(gifs => {
           const gifsArray = [];
+
           gifs.forEach((element) => {
             const { id, gif, still } = element;
             gifsArray.push({ id, gif, still });

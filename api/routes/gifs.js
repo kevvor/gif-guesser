@@ -46,7 +46,7 @@ router.get('/:tag/:limit', (req, res) => {
     }
   })
     .then(function(res) {
-      const result = [];
+      const gifArray = [];
 
       res.data.data.forEach(element => {
 
@@ -64,7 +64,7 @@ router.get('/:tag/:limit', (req, res) => {
           }
         }
 
-        result.push(gifData)
+        gifArray.push(gifData)
       })
 
       return result;

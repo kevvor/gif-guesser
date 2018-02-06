@@ -8,4 +8,8 @@ Most people require 40 gifs before they even get close.
 
 To run the game:
 
-```cd api && npm install && npm start && cd .. && cd front-end && npm install && npm start```
+```cd api && npm install && npm start```
+
+In a new terminal window: 
+
+```cd .. && cd front-end && npm install && npm start```

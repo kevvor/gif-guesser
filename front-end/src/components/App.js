@@ -32,11 +32,14 @@ class App extends Component {
       modal: {
         isOpen: false,
         message: ''
-      }
+      },
+      requestSent: false
     };
   }
 
   componentDidMount() {
+    window.addEventListener('scroll', this.handleOnScroll.bind(this));
+    
     this.loadPage();
   }
 
@@ -56,7 +59,7 @@ class App extends Component {
 
   render() {
     const { error, isLoaded, words, modal, isCorrect } = this.state;
-
+    console.log(this.state.gifs)
     const gifs = this.state.gifs.map((gif) => {
       return (
         <Gif key={gif.id}
@@ -71,26 +74,25 @@ class App extends Component {
     } else if (!isLoaded) {
       return <div className='answered user-msg'>Loading...</div>
     } else {
-      return (
-        <div className="App">
-          {modal.isOpen &&
-            <Modal modalClose={this.modalClose.bind(this)}
-                   message={modal.message}
-                   winningGif={winningGif}
-                   isCorrect={isCorrect}
-                   resetGame={this.resetGame.bind(this)}
-            />
-          }
-          <Form words={words}
-                handleFormSubmit={this.handleFormSubmit.bind(this)}
-                handleOptionChange={this.handleOptionChange.bind(this)}
-                selectedOption={this.state.selectedOption}
+      return <div className="App">
+          {modal.isOpen && 
+            <Modal 
+              modalClose={this.modalClose.bind(this)} 
+              message={modal.message}  
+              winningGif={winningGif} 
+              isCorrect={isCorrect} 
+              resetGame={this.resetGame.bind(this)} 
+            />}
+          <Form 
+            words={words} 
+            handleFormSubmit={this.handleFormSubmit.bind(this)} 
+            handleOptionChange={this.handleOptionChange.bind(this)} 
+            selectedOption={this.state.selectedOption} 
           />
           <div className="masonry">
-            { gifs }
+            {gifs}
           </div>
-        </div>
-      );
+        </div>;
     }
   }
 
@@ -130,7 +132,7 @@ class App extends Component {
   handleFormSubmit(e) {
     e.preventDefault();
 
-    const { selectedOption, answer, isCorrect } = this.state;
+    const { selectedOption, answer } = this.state;
 
     if (selectedOption === answer) {
       this.setState({ isCorrect: true })
@@ -138,7 +140,7 @@ class App extends Component {
     } else if (selectedOption === null) {
       this.modalOpen('Pick something!');
     } else if (selectedOption !== answer) {
-      this.setState( isCorrect: false )
+      this.setState({ isCorrect: false })
       this.modalOpen('Sorry! The answer was ' + answer + '.')
     }
   }
@@ -146,6 +148,32 @@ class App extends Component {
   handleOptionChange(e) {
     this.setState({ selectedOption: e.target.value })
   }
+
+  handleOnScroll() {
+    let scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+    let scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
+    let clientHeight = document.documentElement.clientHeight || window.innerHeight;
+    let scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+
+    if (scrolledToBottom) {
+      this.querySearchResult();
+    }
+  }
+
+  querySearchResult() {
+    if (this.state.requestSent) {
+      return;
+    }
+    this.setState({ requestSent: true })
+    getGifs(this.state.answer)
+      .then(newGifs => {
+        this.setState({
+          requestSent: false,
+          gifs: this.state.gifs.concat(newGifs)
+        })
+      })
+  }
+
 }
 
 export default App;

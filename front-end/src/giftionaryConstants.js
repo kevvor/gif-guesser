@@ -1,4 +1,4 @@
 /* Giftionary consts */
 
 export const BASE_URL = "https://giftionary-api.herokuapp.com";
-export const GIF_LIMIT = 12;
+export const GIF_LIMIT = 100;

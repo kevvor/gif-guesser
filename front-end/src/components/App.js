@@ -16,6 +16,7 @@ import { getWords, getGifs } from '../api';
 /* Stylesheets */
 import '../stylesheets/App.css';
 
+/* Giftionary-App */
 class App extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +24,10 @@ class App extends Component {
     this.state = {
       error: null,
       isLoaded: false,
-      gifs: [],
+      gifs: {
+        allGifs: [],
+        viewableGifs: []
+      },
       words: [],
       answer: null,
       selectedOption: null,
@@ -51,7 +55,16 @@ class App extends Component {
 
       getGifs(answer) // getGifs takes one arg, a search term to fetch gifs
       .then(gifs => {
-        this.setState({ gifs: gifs, isLoaded: true });
+        const viewableGifs = this.state.gifs.viewableGifs.concat(gifs.slice(0, 10));
+        const allGifs = gifs.splice(10)
+        
+        this.setState({ 
+          gifs: {
+            allGifs,
+            viewableGifs
+          }, 
+          isLoaded: true 
+        });
       })
     })
     .catch(handlePromiseError)
@@ -59,8 +72,8 @@ class App extends Component {
 
   render() {
     const { error, isLoaded, words, modal, isCorrect } = this.state;
-    console.log(this.state.gifs)
-    const gifs = this.state.gifs.map((gif) => {
+
+    const gifs = this.state.gifs.viewableGifs.map((gif) => {
       return (
         <Gif key={gif.id}
              gif={gif.gif}
@@ -115,7 +128,10 @@ class App extends Component {
     this.setState({
       error: null,
       isLoaded: false,
-      gifs: [],
+      gifs: {
+        allGifs: [],
+        viewableGifs: []
+      },
       words: [],
       answer: null,
       selectedOption: null,
@@ -124,7 +140,8 @@ class App extends Component {
       modal: {
         isOpen: false,
         message: ''
-      }
+      },
+      requestSent: false
     });
     this.loadPage();
   }
@@ -164,16 +181,23 @@ class App extends Component {
     if (this.state.requestSent) {
       return;
     }
-    this.setState({ requestSent: true })
-    getGifs(this.state.answer)
-      .then(newGifs => {
-        this.setState({
-          requestSent: false,
-          gifs: this.state.gifs.concat(newGifs)
-        })
-      })
-  }
 
+    const allGifs = this.state.gifs.allGifs.splice(10)
+    console.log(allGifs)
+    const currentViewableGifs = this.state.gifs.viewableGifs.concat(this.state.gifs.allGifs.slice(0, 10))
+    console.log(currentViewableGifs)
+
+    // console.log(this.state.gifs.allGifs.slice(0, 10))
+    // console.log(this.state.gifs.allGifs.splice(10))
+
+    this.setState({
+      requestSent: false,
+      gifs: {
+        allGifs: allGifs,
+        viewableGifs: currentViewableGifs
+      }
+    })
+  }
 }
 
 export default App;

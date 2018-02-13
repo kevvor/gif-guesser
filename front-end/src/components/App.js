@@ -116,13 +116,15 @@ class App extends Component {
         message
       }
     });
-  };
+  }
 
   modalClose() {
     this.setState({
-      modal: { isOpen: false }
+      modal: { 
+        isOpen: false 
+      }
     });
-  };
+  }
 
   resetGame() {
     this.setState({
@@ -178,8 +180,11 @@ class App extends Component {
   }
 
   querySearchResult() {
+    // Handle multiple queries by returning if request is in state
     if (this.state.requestSent) {
       return;
+    } else {
+      this.setState({ requestSent: true });
     }
 
     const allGifs = this.state.gifs.allGifs.splice(10)

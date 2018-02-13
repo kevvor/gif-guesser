@@ -8,6 +8,11 @@ div.masonry {
   div.masonry {
     column-count: 2;
   }
+
+  figure {
+    /* width: 45vw; */
+    /* min-width: 45vw; */
+  }
 }
 
 @media (max-width: 600px) {

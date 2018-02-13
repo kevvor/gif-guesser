@@ -183,12 +183,7 @@ class App extends Component {
     }
 
     const allGifs = this.state.gifs.allGifs.splice(10)
-    console.log(allGifs)
     const currentViewableGifs = this.state.gifs.viewableGifs.concat(this.state.gifs.allGifs.slice(0, 10))
-    console.log(currentViewableGifs)
-
-    // console.log(this.state.gifs.allGifs.slice(0, 10))
-    // console.log(this.state.gifs.allGifs.splice(10))
 
     this.setState({
       requestSent: false,

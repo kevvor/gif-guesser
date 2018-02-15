@@ -9,6 +9,7 @@ import Modal from './Modal';
 import { winningGif } from '../utils/modal';
 import { getAnswer} from '../utils/words';
 import { handlePromiseError } from '../utils/handlePromiseError';
+import scrolledToBottom from '../utils/window';
 
 /* API stuff */
 import { getWords, getGifs } from '../api';
@@ -42,9 +43,52 @@ class App extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleOnScroll.bind(this));
-    
+    // Check handleOnScroll() => binds event listener for when bottom
+    // of page is reached
+    window.addEventListener('scroll', this.handleOnScroll);
+
     this.loadPage();
+  }
+
+  render() {
+    const { error, isLoaded, words, modal, isCorrect } = this.state;
+
+    const gifs = this.state.gifs.viewableGifs.map((gif) => (
+      <Gif key={gif.id}
+          gif={gif.gif}
+          still={gif.still}
+        />
+      )
+    )
+
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    } else if (!isLoaded) {
+      return <div className='answered user-msg'>Loading...</div>
+    } else {
+      return (
+        <div className="App">
+          {modal.isOpen &&
+            <Modal
+              modalClose={this.modalClose}
+              message={modal.message}
+              winningGif={winningGif}
+              isCorrect={isCorrect}
+              resetGame={this.resetGame}
+            />
+          }
+          <Form
+            words={words}
+            handleFormSubmit={this.handleFormSubmit}
+            handleOptionChange={this.handleOptionChange}
+            selectedOption={this.state.selectedOption}
+          />
+          <div className="masonry">
+            {gifs}
+          </div>
+        </div>
+      )
+    }
   }
 
   loadPage() {
@@ -52,61 +96,24 @@ class App extends Component {
     .then(words => {
       const answer = getAnswer(words);
       this.setState({ words, answer });
-
-      getGifs(answer) // getGifs takes one arg, a search term to fetch gifs
-      .then(gifs => {
-        const viewableGifs = this.state.gifs.viewableGifs.concat(gifs.slice(0, 10));
-        const allGifs = gifs.splice(10)
-        
-        this.setState({ 
-          gifs: {
-            allGifs,
-            viewableGifs
-          }, 
-          isLoaded: true 
-        });
-      })
+      return answer;
+    })
+    .then(term => {
+      return getGifs(term);
+    })
+    .then(gifs => {
+      const viewableGifs = this.state.gifs.viewableGifs.concat(gifs.slice(0, 10));
+      const allGifs = gifs.splice(10)
+      
+      this.setState({ 
+        gifs: {
+          allGifs,
+          viewableGifs
+        }, 
+        isLoaded: true 
+      });
     })
     .catch(handlePromiseError)
-  }
-
-  render() {
-    const { error, isLoaded, words, modal, isCorrect } = this.state;
-
-    const gifs = this.state.gifs.viewableGifs.map((gif) => {
-      return (
-        <Gif key={gif.id}
-             gif={gif.gif}
-             still={gif.still}
-        />
-      )
-    })
-
-    if (error) {
-      return <div>Error: { error.message }</div>;
-    } else if (!isLoaded) {
-      return <div className='answered user-msg'>Loading...</div>
-    } else {
-      return <div className="App">
-          {modal.isOpen && 
-            <Modal 
-              modalClose={this.modalClose.bind(this)} 
-              message={modal.message}  
-              winningGif={winningGif} 
-              isCorrect={isCorrect} 
-              resetGame={this.resetGame.bind(this)} 
-            />}
-          <Form 
-            words={words} 
-            handleFormSubmit={this.handleFormSubmit.bind(this)} 
-            handleOptionChange={this.handleOptionChange.bind(this)} 
-            selectedOption={this.state.selectedOption} 
-          />
-          <div className="masonry">
-            {gifs}
-          </div>
-        </div>;
-    }
   }
 
   modalOpen(message) {
@@ -118,7 +125,7 @@ class App extends Component {
     });
   }
 
-  modalClose() {
+  modalClose = () => {
     this.setState({
       modal: { 
         isOpen: false 
@@ -126,7 +133,7 @@ class App extends Component {
     });
   }
 
-  resetGame() {
+  resetGame = () => {
     this.setState({
       error: null,
       isLoaded: false,
@@ -148,7 +155,7 @@ class App extends Component {
     this.loadPage();
   }
 
-  handleFormSubmit(e) {
+  handleFormSubmit = e => {
     e.preventDefault();
 
     const { selectedOption, answer } = this.state;
@@ -164,16 +171,11 @@ class App extends Component {
     }
   }
 
-  handleOptionChange(e) {
+  handleOptionChange = e => {
     this.setState({ selectedOption: e.target.value })
   }
 
-  handleOnScroll() {
-    let scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-    let scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
-    let clientHeight = document.documentElement.clientHeight || window.innerHeight;
-    let scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
-
+  handleOnScroll = () => {
     if (scrolledToBottom) {
       this.querySearchResult();
     }
@@ -187,8 +189,8 @@ class App extends Component {
       this.setState({ requestSent: true });
     }
 
-    const allGifs = this.state.gifs.allGifs.splice(10)
-    const currentViewableGifs = this.state.gifs.viewableGifs.concat(this.state.gifs.allGifs.slice(0, 10))
+    const allGifs = this.state.gifs.allGifs.splice(10);
+    const currentViewableGifs = this.state.gifs.viewableGifs.concat(this.state.gifs.allGifs.slice(0, 10));
 
     this.setState({
       requestSent: false,

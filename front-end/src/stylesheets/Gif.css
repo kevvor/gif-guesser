@@ -8,11 +8,6 @@ div.masonry {
   div.masonry {
     column-count: 2;
   }
-
-  figure {
-    /* width: 45vw; */
-    /* min-width: 45vw; */
-  }
 }
 
 @media (max-width: 600px) {
@@ -26,8 +21,8 @@ figure {
 }
 
 figure img.gif {
-  padding: 2px 2.5vw;
-  max-width: 95%;
+  padding: .5vw .25vw 0;
+  width: 100%;
 }
 
 figure .gif.item {

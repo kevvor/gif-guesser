@@ -14,8 +14,6 @@ const app = express();
 
 /* HTTP request logger */
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
 
 /* Views */
 app.use(express.static('public'));

@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import Gif from './Gif';
 
+/* Utils */
+import winningGif from '../utils/modal';
+
 import '../stylesheets/Modal.css'
 
 class Modal extends Component {
   render() {
-    const { message, isCorrect, winningGif, resetGame } = this.props;
+    const { message, isCorrect, resetGame } = this.props;
 
     return (
       <div>

@@ -1,6 +1,6 @@
 /* Modal utils */
 
-export function winningGif() {
+export default function winningGif() {
   return gifs[Math.floor(Math.random() * gifs.length)];
 };
 

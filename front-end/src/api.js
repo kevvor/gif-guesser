@@ -15,17 +15,17 @@ export function getWords() {
 export function getGifs(searchTerm) {
     return (
       fetch(`${BASE_URL}/api/gifs/${searchTerm}/${GIF_LIMIT}`)
-        .then(res => res.json())
-        .then(gifs => {
-          const gifsArray = [];
+      .then(res => res.json())
+      .then(gifs => {
+        const gifsArray = [];
 
-          gifs.forEach((element) => {
-            const { id, gif, still } = element;
-            gifsArray.push({ id, gif, still });
-          });
+        gifs.forEach((element) => {
+          const { id, gif, still } = element;
+          gifsArray.push({ id, gif, still });
+        });
 
-          return gifsArray;
-        })
-        .catch(handlePromiseError)
+        return gifsArray;
+      })
+      .catch(handlePromiseError)
     )
   }

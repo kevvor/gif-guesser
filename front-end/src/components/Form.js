@@ -3,6 +3,7 @@ import '../stylesheets/Form.css';
 
 class Form extends Component {
   render() {
+    
     const { handleFormSubmit, handleOptionChange, selectedOption, words } = this.props;
 
     return (

@@ -6,7 +6,6 @@ import Form from './Form';
 import Modal from './Modal';
 
 /* Utils */
-import { winningGif } from '../utils/modal';
 import { getAnswer} from '../utils/words';
 import { handlePromiseError } from '../utils/handlePromiseError';
 import scrolledToBottom from '../utils/window';
@@ -43,14 +42,14 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // Check handleOnScroll() => binds event listener for when bottom
-    // of page is reached
+    // Check handleOnScroll() => binds event listener for when bottom of page is reached
     window.addEventListener('scroll', this.handleOnScroll);
 
     this.loadPage();
   }
 
   render() {
+
     const { error, isLoaded, words, modal, isCorrect } = this.state;
 
     const gifs = this.state.gifs.viewableGifs.map((gif) => (
@@ -72,7 +71,6 @@ class App extends Component {
             <Modal
               modalClose={this.modalClose}
               message={modal.message}
-              winningGif={winningGif}
               isCorrect={isCorrect}
               resetGame={this.resetGame}
             />
@@ -98,9 +96,7 @@ class App extends Component {
       this.setState({ words, answer });
       return answer;
     })
-    .then(term => {
-      return getGifs(term);
-    })
+    .then(term => getGifs(term))
     .then(gifs => {
       const viewableGifs = this.state.gifs.viewableGifs.concat(gifs.slice(0, 10));
       const allGifs = gifs.splice(10)
@@ -116,7 +112,7 @@ class App extends Component {
     .catch(handlePromiseError)
   }
 
-  modalOpen(message) {
+  modalOpen = message => {
     this.setState({
       modal: {
         isOpen: true,
@@ -184,6 +180,7 @@ class App extends Component {
   querySearchResult() {
     // Handle multiple queries by returning if request is in state
     if (this.state.requestSent) {
+      console.log('A request is already being processed');
       return;
     } else {
       this.setState({ requestSent: true });

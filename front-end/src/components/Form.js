@@ -16,7 +16,7 @@ class Form extends Component {
     ))
 
     return (
-        <div className='form'>
+        <div id='game-form'>
             {formButtons}
         </div>
     )

@@ -2,7 +2,7 @@
 
 const randomElement = require('./random');
 
-exports.selectRandom = function(data) {
+exports.selectRandom = data => {
   randomElement(data).answer = true;
   return data;
 }

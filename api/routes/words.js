@@ -14,7 +14,6 @@ const minCorpus = 400000; // How frequently a word must appear in some huge samp
 const maxCorpus = -1;     // Note: I'm not sure how large the API's sample is, this number was determined through trial and error untill I liked the output
 
 /* Helper */
-
 const helper = require('../helpers/words');
 
 /* INDEX */

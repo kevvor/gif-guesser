@@ -6,6 +6,6 @@ run ```npm start``` to start the server
 
 GET /api/gifs
 
-GET /api/gifs/:tag
+GET /api/gifs/:tag/:limit
 
 GET /api/words

@@ -20,7 +20,6 @@ app.use(express.static('public'));
 app.use(express.static(__dirname + '/views'));
 
 /* Router */
-
 app.use('/api/gifs', gifs);
 app.use('/api/words', words);
 
@@ -35,10 +34,10 @@ app.get('/happy', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  res.send('something went wrong')
+  res.send("Something went wrong :'(")
 });
 
 /* Start server */
-app.listen(PORT, function() {
-  console.log('Serving up some slick routes on ' + PORT);
+app.listen(PORT, () => {
+  console.log('Serving up some slick routes on port ' + PORT);
 });

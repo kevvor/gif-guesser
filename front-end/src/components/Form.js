@@ -3,7 +3,7 @@ import '../stylesheets/Form.css';
 
 class Form extends Component {
   render() {
-    const { onAnswerSubmit, answer, words } = this.props;
+    const { onAnswerSubmit, words } = this.props;
 
     const formButtons = words.map(word => (
         <button

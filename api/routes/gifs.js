@@ -4,12 +4,12 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-// API info
+/* API info */
 
 const GIPHY_API_KEY = process.env.GIPHY_API_KEY;
 const url = 'https://api.giphy.com/v1/gifs';
 
-/* INDEX */
+/* Routes */ 
 
 router.get('/', (req, res) => {
 // Get a random gif
@@ -24,12 +24,10 @@ router.get('/', (req, res) => {
   .catch(err => res.send(err));
 })
 
-/* SHOW */
-
 router.get('/:tag/:limit', (req, res) => {
 // Get gifs based on tag
-  
-  axios.get(`${url}/search`, {
+
+axios.get(`${url}/search`, {
     params: {
       api_key: GIPHY_API_KEY,
       q: req.params.tag,

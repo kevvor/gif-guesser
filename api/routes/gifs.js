@@ -1,8 +1,8 @@
 /* API routes */
 
-const express       = require('express');
-const router        = express.Router();
-const axios         = require('axios');
+const express = require('express');
+const router = express.Router();
+const axios = require('axios');
 
 // API info
 
@@ -17,37 +17,28 @@ router.get('/', (req, res) => {
   axios.get(`${url}/random`, {
     params: {
       api_key: GIPHY_API_KEY,
-      // tag: 'pickle'
     }
   })
-  .then(function(res) {
-    return res.data;
-  })
-  .then(function(data) {
-    res.json(data);
-  })
-  .catch(function(err) {
-    res.send(err);
-  });
-
+  .then(res => res.data)
+  .then(data => res.json(data))
+  .catch(err => res.send(err));
 })
 
 /* SHOW */
 
 router.get('/:tag/:limit', (req, res) => {
 // Get gifs based on tag
-  console.log('tag:', req.params.tag, 'limit:', req.params.limit)
   
   axios.get(`${url}/search`, {
     params: {
       api_key: GIPHY_API_KEY,
       q: req.params.tag,
       limit: req.params.limit,
-      lang: 'en'
+      lang: 'en',
+      rating: 'pg-13'
     }
   })
-  .then(function(res) {
-    console.log('line: 50')
+  .then(res => {
     const result = [];
 
     res.data.data.forEach(element => {
@@ -68,14 +59,9 @@ router.get('/:tag/:limit', (req, res) => {
       result.push(gifData)
     })
       return result;
-    })
-    .then(function(data) {
-      console.log('data')
-      res.json(data);
-    })
-    .catch(function(err) {
-      res.send(err);
-    })
+  })
+  .then(data => res.json(data))
+  .catch(err => res.send(err))
 })
 
 module.exports = router;

@@ -34,6 +34,10 @@ app.get('/happy', (req, res) => {
   res.json({msg: ':)'});
 });
 
+app.get('*', (req, res) => {
+  res.send('something went wrong')
+});
+
 /* Start server */
 app.listen(PORT, function() {
   console.log('Serving up some slick routes on ' + PORT);

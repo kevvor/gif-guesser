@@ -2,6 +2,7 @@ div.masonry {
   column-gap: 1em;
   column-count: 3;
   margin-bottom: 61px;
+  grid-column: 1/2;
 }
 
 @media (max-width: 1000px) {

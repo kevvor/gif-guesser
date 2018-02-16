@@ -10,6 +10,8 @@ class Modal extends Component {
   render() {
     const { message, isCorrect, resetGame } = this.props;
 
+    console.log(winningGif())
+
     return (
       <div>
         <div className="modal" onClick={resetGame}>

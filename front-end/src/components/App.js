@@ -8,7 +8,6 @@ import Modal from './Modal';
 /* Utils */
 import { getAnswer} from '../utils/words';
 import { handlePromiseError } from '../utils/handlePromiseError';
-import scrolledToBottom from '../utils/window';
 
 /* API stuff */
 import { getWords, getGifs } from '../api';
@@ -31,13 +30,13 @@ class App extends Component {
       words: [],
       answer: null,
       selectedOption: null,
-      userAnswered: null,
       isCorrect: null,
       modal: {
         isOpen: false,
         message: ''
       },
-      requestSent: false
+      requestSent: false,
+      score: 0
     };
   }
 
@@ -53,12 +52,12 @@ class App extends Component {
     const { error, isLoaded, words, modal, isCorrect } = this.state;
 
     const gifs = this.state.gifs.viewableGifs.map((gif) => (
-      <Gif key={gif.id}
-          gif={gif.gif}
-          still={gif.still}
-        />
-      )
-    )
+      <Gif 
+        key={gif.id}
+        gif={gif.gif}
+        still={gif.still}
+      />
+    ))
 
     if (error) {
       return <div>Error: {error.message}</div>;
@@ -75,14 +74,14 @@ class App extends Component {
               resetGame={this.resetGame}
             />
           }
+          <div className="masonry">
+            {gifs}
+          </div>
           <Form
             words={words}
             onAnswerSubmit={this.onAnswerSubmit}
             answer={this.state.answer}
           />
-          <div className="masonry">
-            {gifs}
-          </div>
         </div>
       )
     }
@@ -139,26 +138,33 @@ class App extends Component {
       words: [],
       answer: null,
       selectedOption: null,
-      userAnswered: null,
       isCorrect: null,
       modal: {
         isOpen: false,
         message: ''
       },
-      requestSent: false
+      requestSent: false,
+      score: 0
     });
     this.loadPage();
   }
 
   onAnswerSubmit = answer => {
-    console.log(answer)
     if (answer === this.state.answer) {
-      console.log('You won!')
+      this.setState(prevState => ({ score: prevState.score + 1, isCorrect: true }));
+      this.modalOpen('Yea! You got it!!1!');
+    } else if (answer !== this.state.answer) {
+      this.modalOpen('No.. the answer was ' + this.state.answer + ' :(');
     }
   }
 
   handleOnScroll = () => {
-    if (scrolledToBottom) { // imported from ./utils/window
+    let scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+    let scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
+    let clientHeight = document.documentElement.clientHeight || window.innerHeight;
+    let scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+
+    if (scrolledToBottom && !this.state.modal.isOpen) { 
       this.querySearchResult();
     }
   }
@@ -172,8 +178,8 @@ class App extends Component {
       this.setState({ requestSent: true });
     }
 
-    const allGifs = this.state.gifs.allGifs.splice(10);
-    const currentViewableGifs = this.state.gifs.viewableGifs.concat(this.state.gifs.allGifs.slice(0, 10));
+    const allGifs = this.state.gifs.allGifs.splice(5);
+    const currentViewableGifs = this.state.gifs.viewableGifs.concat(this.state.gifs.allGifs.slice(0, 5));
 
     this.setState({
       requestSent: false,

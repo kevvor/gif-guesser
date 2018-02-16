@@ -9,7 +9,7 @@ const axios = require('axios');
 const GIPHY_API_KEY = process.env.GIPHY_API_KEY;
 const url = 'https://api.giphy.com/v1/gifs';
 
-/* Helpr */
+/* Helper */
 const buildGif = require('../helpers/gifs');
 
 /* Routes */ 
@@ -25,7 +25,9 @@ router.get('/', (req, res) => {
   .then(res => res.data)
   .then(data => res.json(data))
   .catch(err => res.send(err));
-})
+});
+
+/* GET /:tag */
 
 router.get('/:tag', (req, res) => {
   axios.get(`${url}/search`, {
@@ -40,7 +42,7 @@ router.get('/:tag', (req, res) => {
   .then(res => res.data.data)
   .then(gifs => gifs.map(gif => buildGif(gif)))
   .then(data => res.json(data))
-  .catch(err => res.send(err))
+  .catch(err => res.send(err));
 });
 
 router.get('/:tag/:limit', (req, res) => {

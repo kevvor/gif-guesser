@@ -77,9 +77,8 @@ class App extends Component {
           }
           <Form
             words={words}
-            handleFormSubmit={this.handleFormSubmit}
-            handleOptionChange={this.handleOptionChange}
-            selectedOption={this.state.selectedOption}
+            onAnswerSubmit={this.onAnswerSubmit}
+            answer={this.state.answer}
           />
           <div className="masonry">
             {gifs}
@@ -151,28 +150,15 @@ class App extends Component {
     this.loadPage();
   }
 
-  handleFormSubmit = e => {
-    e.preventDefault();
-
-    const { selectedOption, answer } = this.state;
-
-    if (selectedOption === answer) {
-      this.setState({ isCorrect: true })
-      this.modalOpen('You got it!');
-    } else if (selectedOption === null) {
-      this.modalOpen('Pick something!');
-    } else if (selectedOption !== answer) {
-      this.setState({ isCorrect: false })
-      this.modalOpen('Sorry! The answer was ' + answer + '.')
+  onAnswerSubmit = answer => {
+    console.log(answer)
+    if (answer === this.state.answer) {
+      console.log('You won!')
     }
   }
 
-  handleOptionChange = e => {
-    this.setState({ selectedOption: e.target.value })
-  }
-
   handleOnScroll = () => {
-    if (scrolledToBottom) {
+    if (scrolledToBottom) { // imported from ./utils/window
       this.querySearchResult();
     }
   }

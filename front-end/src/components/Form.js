@@ -3,25 +3,22 @@ import '../stylesheets/Form.css';
 
 class Form extends Component {
   render() {
-    
-    const { handleFormSubmit, handleOptionChange, selectedOption, words } = this.props;
+    const { onAnswerSubmit, answer, words } = this.props;
+
+    const formButtons = words.map(word => (
+        <button
+            className='btn'
+            key={word.id}
+            onClick={() => onAnswerSubmit(word.word)}
+        >
+            {word.word}
+        </button>
+    ))
 
     return (
-      <form id="game-form" onSubmit={handleFormSubmit}>
-        {words.map((word) =>
-            <label key={word.id} className="radio-label">
-              <input
-                className="form-radio"
-                type="radio"
-                value={word.word}
-                checked={selectedOption === word.word}
-                onChange={handleOptionChange}
-              />
-              {word.word}
-            </label>
-        )}
-        <button className="btn submit">submit</button>
-      </form>
+        <div className='form'>
+            {formButtons}
+        </div>
     )
   }
 }

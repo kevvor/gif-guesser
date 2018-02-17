@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+
+import Score from '../components/Score';
+
 import '../stylesheets/Form.css';
 
 class Form extends Component {
@@ -16,8 +19,13 @@ class Form extends Component {
     ))
 
     return (
-        <div id='game-form'>
-            {formButtons}
+        <div className="form-container">
+            <div id='game-form'>
+                {formButtons}
+            </div>
+            <Score 
+                score={this.props.score}
+            />
         </div>
     )
   }

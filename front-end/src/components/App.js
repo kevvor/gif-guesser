@@ -61,8 +61,8 @@ class App extends Component {
 
     if (error) {
       return <div>Error: {error.message}</div>;
-    } else if (!isLoaded) {
-      return <div className='answered user-msg'>Loading...</div>
+    /*} else if (!isLoaded) {
+      return <div className='answered user-msg'>Loading...</div> */
     } else {
       return (
         <div className="App">
@@ -81,6 +81,7 @@ class App extends Component {
             words={words}
             onAnswerSubmit={this.onAnswerSubmit}
             answer={this.state.answer}
+            score={this.state.score}
           />
         </div>
       )
@@ -144,7 +145,6 @@ class App extends Component {
         message: ''
       },
       requestSent: false,
-      score: 0
     });
     this.loadPage();
   }

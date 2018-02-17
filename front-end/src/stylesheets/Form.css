@@ -10,6 +10,7 @@ div#game-form {
 div#game-form .btn {
   border: none;
   cursor: pointer;
+  background-color: #bdc3c7;
   text-transform: capitalize;
   font-size: 2em;
   padding: 16px 20px;

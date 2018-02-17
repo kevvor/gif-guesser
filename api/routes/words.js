@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
       api_key: WORDNIK_API_KEY,
       limit: 4,
       minLength: 3,
-      maxLength: -1,
+      maxLength: 10,
       minCorpusCount: minCorpus,
       maxCorpusCount: maxCorpus
     }

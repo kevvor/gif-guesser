@@ -6,7 +6,7 @@ import Form from './Form';
 import Modal from './Modal';
 
 /* Utils */
-import { getAnswer} from '../utils/words';
+import { getAnswer } from '../utils/words';
 import { handlePromiseError } from '../utils/handlePromiseError';
 
 /* API stuff */
@@ -52,7 +52,7 @@ class App extends Component {
     const { error, isLoaded, words, modal, isCorrect } = this.state;
 
     const gifs = this.state.gifs.viewableGifs.map((gif) => (
-      <Gif 
+      <Gif
         key={gif.id}
         gif={gif.gif}
         still={gif.still}
@@ -61,8 +61,8 @@ class App extends Component {
 
     if (error) {
       return <div>Error: {error.message}</div>;
-    /*} else if (!isLoaded) {
-      return <div className='answered user-msg'>Loading...</div> */
+      /*} else if (!isLoaded) {
+        return <div className='answered user-msg'>Loading...</div> */
     } else {
       return (
         <div className="App">
@@ -90,25 +90,25 @@ class App extends Component {
 
   loadPage() {
     getWords()
-    .then(words => {
-      const answer = getAnswer(words);
-      this.setState({ words, answer });
-      return answer;
-    })
-    .then(term => getGifs(term))
-    .then(gifs => {
-      const viewableGifs = this.state.gifs.viewableGifs.concat(gifs.slice(0, 10));
-      const allGifs = gifs.splice(10)
-      
-      this.setState({ 
-        gifs: {
-          allGifs,
-          viewableGifs
-        }, 
-        isLoaded: true 
-      });
-    })
-    .catch(handlePromiseError)
+      .then(words => {
+        const answer = getAnswer(words);
+        this.setState({ words, answer });
+        return answer;
+      })
+      .then(term => getGifs(term))
+      .then(gifs => {
+        const viewableGifs = this.state.gifs.viewableGifs.concat(gifs.slice(0, 10));
+        const allGifs = gifs.splice(10)
+
+        this.setState({
+          gifs: {
+            allGifs,
+            viewableGifs
+          },
+          isLoaded: true
+        });
+      })
+      .catch(handlePromiseError)
   }
 
   modalOpen = message => {
@@ -122,8 +122,8 @@ class App extends Component {
 
   modalClose = () => {
     this.setState({
-      modal: { 
-        isOpen: false 
+      modal: {
+        isOpen: false
       }
     });
   }
@@ -164,7 +164,7 @@ class App extends Component {
     let clientHeight = document.documentElement.clientHeight || window.innerHeight;
     let scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
 
-    if (scrolledToBottom && !this.state.modal.isOpen) { 
+    if (scrolledToBottom && !this.state.modal.isOpen) {
       this.querySearchResult();
     }
   }

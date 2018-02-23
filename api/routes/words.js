@@ -19,6 +19,7 @@ const helper = require('../helpers/words');
 /* INDEX */
 
 router.get('/', (req, res) => {
+  console.log('req received')
 
   axios.get(url, {
     params: {
@@ -30,12 +31,12 @@ router.get('/', (req, res) => {
       maxCorpusCount: maxCorpus
     }
   })
-  .then(res => res.data)
-  .then(data => {
-    helper.selectRandom(data);
-    res.json(data);
-  })
-  .catch(err => res.send(err))
+    .then(res => res.data)
+    .then(data => {
+      helper.selectRandom(data);
+      res.json(data);
+    })
+    .catch(err => res.send(err))
 })
 
 module.exports = router;

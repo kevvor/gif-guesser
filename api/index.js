@@ -4,11 +4,12 @@ const express = require('express');
 const env = require('dotenv').config();
 const logger = require('morgan');
 const axios = require('axios');
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 
 /* API */
-const gifs  = require('./routes/gifs');
+const gifs = require('./routes/gifs');
 const words = require('./routes/words');
+const game = require('./routes/game');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(express.static(__dirname + '/views'));
 /* Router */
 app.use('/api/gifs', gifs);
 app.use('/api/words', words);
+app.use('/api/game', game);
 
 /* Root */
 app.get('/', (req, res) => {
@@ -30,7 +32,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/happy', (req, res) => {
-  res.json({msg: ':)'});
+  res.json({ msg: ':)' });
 });
 
 app.get('*', (req, res) => {

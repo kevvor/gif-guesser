@@ -9,7 +9,7 @@ const PORT = process.env.PORT;
 /* API */
 const gifs = require('./routes/gifs');
 const words = require('./routes/words');
-const game = require('./routes/game');
+const games = require('./routes/games');
 
 const app = express();
 
@@ -23,7 +23,7 @@ app.use(express.static(__dirname + '/views'));
 /* Router */
 app.use('/api/gifs', gifs);
 app.use('/api/words', words);
-app.use('/api/game', game);
+app.use('/api/games', games);
 
 /* Root */
 app.get('/', (req, res) => {

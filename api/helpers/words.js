@@ -7,4 +7,12 @@ exports.selectRandom = data => {
   return data;
 }
 
+exports.getAnswer = wordsArray => {
+  for (let word of wordsArray) {
+    if (word.answer === true) {
+      return word.word;
+    }
+  }
+}
+
 module.exports = exports;

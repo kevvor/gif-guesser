@@ -10,7 +10,7 @@ import { getAnswer } from '../utils/words';
 import { handlePromiseError } from '../utils/handlePromiseError';
 
 /* API stuff */
-import { getWords, getGifs } from '../api';
+import { fetchNewGameState } from '../api';
 
 /* Stylesheets */
 import '../stylesheets/App.css';
@@ -61,8 +61,8 @@ class App extends Component {
 
     if (error) {
       return <div>Error: {error.message}</div>;
-      /*} else if (!isLoaded) {
-        return <div className='answered user-msg'>Loading...</div> */
+    } else if (!isLoaded) {
+      return <div className='answered user-msg'>Loading...</div>
     } else {
       return (
         <div className="App">
@@ -89,18 +89,14 @@ class App extends Component {
   }
 
   loadPage() {
-    getWords()
-      .then(words => {
-        const answer = getAnswer(words);
-        this.setState({ words, answer });
-        return answer;
-      })
-      .then(term => getGifs(term))
-      .then(gifs => {
-        const viewableGifs = this.state.gifs.viewableGifs.concat(gifs.slice(0, 10));
-        const allGifs = gifs.splice(10)
+    fetchNewGameState()
+      .then(gameData => {
+        const viewableGifs = this.state.gifs.viewableGifs.concat(gameData.gifs.slice(0, 10));
+        const allGifs = gameData.gifs.splice(10);
 
         this.setState({
+          words: gameData.words,
+          answer: gameData.answer,
           gifs: {
             allGifs,
             viewableGifs

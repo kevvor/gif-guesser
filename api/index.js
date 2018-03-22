@@ -4,7 +4,8 @@ const express = require('express');
 const env = require('dotenv').config();
 const logger = require('morgan');
 const axios = require('axios');
-const PORT = process.env.PORT;
+const cors = require('cors');
+const PORT = process.env.PORT || 8080;
 
 /* API */
 const gifs = require('./routes/gifs');
@@ -12,6 +13,9 @@ const words = require('./routes/words');
 const games = require('./routes/games');
 
 const app = express();
+
+/* CORS */
+app.use(cors());
 
 /* HTTP request logger */
 app.use(logger('dev'));

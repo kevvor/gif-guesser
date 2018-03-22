@@ -6,7 +6,6 @@ import Form from './Form';
 import Modal from './Modal';
 
 /* Utils */
-import { getAnswer } from '../utils/words';
 import { handlePromiseError } from '../utils/handlePromiseError';
 
 /* API stuff */

@@ -1,10 +1,10 @@
 body {
-    background-color: #fff;
+    background-color: #000;
 }
 
 div.App {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
+    width: 80%;
+    margin: auto;
 }
 
 .user-msg {
